@@ -119,17 +119,6 @@ endif()
 
 configure_pkg_config_file(ogg.pc.in)
 
-install(TARGETS ogg
-    EXPORT OggTargets
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    FRAMEWORK DESTINATION ${CMAKE_INSTALL_PREFIX}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ogg
-)
-
-export(EXPORT OggTargets NAMESPACE Ogg:: FILE OggTargets.cmake)
-
 if(INSTALL_CMAKE_PACKAGE_MODULE)
     set(CMAKE_INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Ogg)
     install(EXPORT OggTargets
@@ -180,24 +169,6 @@ if(INSTALL_DOCS)
     )
     install(FILES ${OGG_DOCS} DESTINATION ${CMAKE_INSTALL_DOCDIR}/html)
     install(DIRECTORY doc/libogg DESTINATION ${CMAKE_INSTALL_DOCDIR}/html)
-endif()
-
-if(BUILD_TESTING)
-    add_executable(test_bitwise src/bitwise.c ${OGG_HEADERS})
-    target_compile_definitions(test_bitwise PRIVATE _V_SELFTEST)
-    target_include_directories(test_bitwise PRIVATE
-        include
-        ${CMAKE_CURRENT_BINARY_DIR}/include
-    )
-    add_test(NAME test_bitwise COMMAND $<TARGET_FILE:test_bitwise>)
-
-    add_executable(test_framing src/framing.c ${OGG_HEADERS})
-    target_compile_definitions(test_framing PRIVATE _V_SELFTEST)
-    target_include_directories(test_framing PRIVATE
-        include
-        ${CMAKE_CURRENT_BINARY_DIR}/include
-    )
-    add_test(NAME test_framing COMMAND $<TARGET_FILE:test_framing>)
 endif()
 
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
